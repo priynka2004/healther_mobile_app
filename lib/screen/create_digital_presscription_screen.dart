@@ -3,24 +3,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:healther_mobile_app/bottom_sheet/fever_affiramtions_sheet.dart';
 import 'package:healther_mobile_app/screen/sx&dx_screen.dart';
 import 'package:healther_mobile_app/utils/app_colors.dart';
+import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:healther_mobile_app/utils/string_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class CreateDigitalPrescriptionScreen extends StatefulWidget {
-  const CreateDigitalPrescriptionScreen(
-      {this.selectedSymptoms,
-        this.selectedDiagnoses,
-        this.symptoms,
-        this.timePeriod,
-        this.duration,
-        super.key});
+  const CreateDigitalPrescriptionScreen({
+    Key? key,
+    this.selectedSymptoms,
+    this.selectedDiagnoses,
+    this.symptoms,
+    this.timePeriod,
+    this.duration,
+  }) : super(key: key);
 
   final List<String>? selectedSymptoms;
   final List<String>? selectedDiagnoses;
   final String? symptoms;
   final String? timePeriod;
   final String? duration;
+
   @override
   State<CreateDigitalPrescriptionScreen> createState() =>
       _CreateDigitalPrescriptionScreenState();
@@ -31,11 +33,11 @@ class _CreateDigitalPrescriptionScreenState
   // List<Map<String, String>> symptoms = [
   //   {"name": "Fever", "duration": "Duration e.g. 1 day"}
   // ];
-  List<Map<String, String>> symptoms = [
-  ];
+  List<Map<String, String>> symptoms = [];
   Set<String> tappedSymptoms = {};
 
   bool showPneumoniaTextField = false;
+  String times = '';
 
   void addSymptom(String name, String duration) {
     setState(() {
@@ -43,22 +45,28 @@ class _CreateDigitalPrescriptionScreenState
     });
   }
 
-  void removeSymptom(String name) {
+  void _removeSymptom(int index) {
     setState(() {
-      symptoms.removeWhere((symptom) => symptom["name"] == name);
-      tappedSymptoms.remove(name);
-      if (name == "Seizure") {
-        symptoms.firstWhere((symptom) => symptom["name"] == "Fever",
-            orElse: () => {"duration": "Duration e.g. 1 day"})["duration"] =
-        "Duration e.g. 1 day";
-      }
+      widget.selectedSymptoms!.removeAt(index);
+    });
+  }
+
+  void _removeDiagnoses(int index) {
+    setState(() {
+      widget.selectedDiagnoses!.removeAt(index);
+    });
+  }
+
+
+  void removeSymptom(int index) {
+    setState(() {
+      symptoms.removeAt(index);
     });
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   TextEditingController searchController = TextEditingController();
-
 
   bool _isDrawerOpen = false;
 
@@ -73,22 +81,34 @@ class _CreateDigitalPrescriptionScreenState
     });
   }
 
+  String symptomName = '';
+
   @override
   void initState() {
     super.initState();
-    if (widget.timePeriod != null && widget.duration != null) {
+    _loadSavedValue();
+    getSharedPreferenceData();
+  }
+
+  void getSharedPreferenceData() async {
+    String? time = await SharedPrefService.getTimePeriod();
+    String? symptomName = await SharedPrefService.getSymptomName();
+    setState(() {
+      times = time ?? '';
       symptoms.add({
-        'title': 'Fever',
-        'timePeriod': widget.timePeriod!,
-        'duration': widget.duration!,
-      });
-    } else {
-      symptoms.add({
-        'title': 'Fever',
-        'timePeriod': '',
+        'title': symptomName ?? 'Fever',
+        'timePeriod': time ?? '',
         'duration': 'years',
       });
-    }
+    });
+  }
+
+  Future<void> _loadSavedValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedValue = prefs.getString('savedValue');
+    setState(() {
+      searchController.text = savedValue ?? '';
+    });
   }
 
   @override
@@ -722,8 +742,7 @@ class _CreateDigitalPrescriptionScreenState
                               ),
                             );
                           },
-                          child:
-                          TextField(
+                          child: TextField(
                             controller: searchController,
                             enabled: false,
                             obscureText: false,
@@ -767,46 +786,55 @@ class _CreateDigitalPrescriptionScreenState
                               color: const Color(0xFFC9F0E5),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Row(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Text(
-                                  symptom['title'] ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text(
+                                    symptom['title'] ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '${symptom['timePeriod']} ${symptom['duration']}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.blackColor,
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${symptom['timePeriod']} ${symptom['duration']}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff0B0B0B),
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                              GestureDetector(
+                                const Spacer(),
+                                GestureDetector(
                                   onTap: () {
                                     showModalBottomSheet(
                                       backgroundColor: Colors.transparent,
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return FeverAffirmationsSheet(symptomName: '',);
+                                        return FeverAffirmationsSheet(
+                                            symptomName:
+                                                symptom['title'] ?? '');
                                       },
                                     );
                                   },
-                                  child: buildIcon(Icons.edit, const Color(0xff0B0B0B),
-                                      const Color(0xffF8F7FC))),
-                              const SizedBox(width: 6),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: buildIcon(
-                                    Icons.close, const Color(0xffF8F7FC), const Color(0xff0B0B0B)),
-                              ),
-                            ]),
+                                  child: buildIcon(
+                                      Icons.edit,
+                                      const Color(0xff0B0B0B),
+                                      const Color(0xffF8F7FC)),
+                                ),
+                                const SizedBox(width: 6),
+                                IconButton(
+                                  icon: buildIcon(
+                                      Icons.close,
+                                      const Color(0xffF8F7FC),
+                                      const Color(0xff0B0B0B)),
+                                  onPressed: () => removeSymptom(index),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -833,18 +861,23 @@ class _CreateDigitalPrescriptionScreenState
                               itemCount: widget.selectedSymptoms!.length,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                       color: const Color(0xFFC9F0E5),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 8),
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          child: Text(widget.selectedSymptoms![index]),
+                                          child: Text(
+                                            widget.selectedSymptoms![index],
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                         const Padding(
                                           padding: EdgeInsets.only(right: 80),
@@ -857,9 +890,18 @@ class _CreateDigitalPrescriptionScreenState
                                           ),
                                         ),
                                         const Spacer(),
-                                        buildIcon(Icons.edit, const Color(0xff0B0B0B), const Color(0xffF8F7FC)),
+                                        buildIcon(
+                                            Icons.edit,
+                                            const Color(0xff0B0B0B),
+                                            const Color(0xffF8F7FC)),
                                         const SizedBox(width: 6),
-                                        buildIcon(Icons.close, const Color(0xffF8F7FC), const Color(0xff0B0B0B)),
+                                        GestureDetector(
+                                          onTap: () => _removeSymptom(index),
+                                          child: buildIcon(
+                                              Icons.close,
+                                              const Color(0xffF8F7FC),
+                                              const Color(0xff0B0B0B)),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -867,7 +909,6 @@ class _CreateDigitalPrescriptionScreenState
                               },
                             ),
                           const Divider(),
-
                           Text(
                             'Differential Diagnosis',
                             style: GoogleFonts.urbanist(
@@ -888,7 +929,8 @@ class _CreateDigitalPrescriptionScreenState
                                 itemCount: widget.selectedDiagnoses?.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
                                     child: Container(
                                       height: 40,
                                       width: double.infinity,
@@ -896,13 +938,23 @@ class _CreateDigitalPrescriptionScreenState
                                         color: const Color(0xFFC9F0E5),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      padding: const EdgeInsets.only(left: 4, top: 8, bottom: 8,right: 6),
+                                      padding: const EdgeInsets.only(
+                                          left: 4, top: 8, bottom: 8, right: 6),
                                       child: Row(
                                         children: [
                                           Expanded(
-                                            child: Text(widget.selectedDiagnoses![index]),
+                                            child: Text(
+                                              widget.selectedDiagnoses![index],
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
-                                          buildIcon(Icons.close, const Color(0xffF8F7FC), const Color(0xff0B0B0B)),
+                                          GestureDetector(
+                                            onTap: () => _removeDiagnoses(index),
+                                            child: buildIcon(
+                                                Icons.close,
+                                                const Color(0xffF8F7FC),
+                                                const Color(0xff0B0B0B)),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -918,61 +970,59 @@ class _CreateDigitalPrescriptionScreenState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(children: [
-                  GestureDetector(
-                    // onTap: () {
-                    //   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    //     return DrugPrescriptionFollowupScreen();
-                    //   }));
-                    // },
-                    child: Container(
-                      width: 150,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffF5F5F5),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Clear',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                padding: const EdgeInsets.all(6.0),
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(children: [
+                      GestureDetector(
+                        child: Container(
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF5F5F5),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Clear',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () {
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   const SnackBar(
-                      //     content: Text('Vitals have been saved successfully.'),
-                      //   ),
-                      // );
-                      // Navigator.push(context, MaterialPageRoute(builder: (context){
-                      //   return const AppointmentScreen();
-                      // }));
-                    },
-                    child: Container(
-                      width: 150,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF32856E),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Save',
-                          style: TextStyle(color: Colors.white),
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('Sx & Dx have been saved successfully.'),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF32856E),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Save',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ]),
                   ),
-                ]),
+                ),
               ),
             ],
           ),
@@ -1024,40 +1074,13 @@ class _CreateDigitalPrescriptionScreenState
                     : Colors.black,
               ),
             ),
-
-            // Container(
-            //   height: 40,
-            //   width: width,
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(8),
-            //   ),
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(left: 10.0),
-            //     // child: TextField(
-            //     //   controller: TextEditingController(text: duration),
-            //     //   decoration: const InputDecoration(
-            //     //     border: InputBorder.none,
-            //     //     hintText: 'Duration e.g. 1 day',
-            //     //     hintStyle: TextStyle(
-            //     //       color: Colors.grey,
-            //     //       fontSize: 14,
-            //     //       fontWeight: FontWeight.w500,
-            //     //     ),
-            //     //   ),
-            //     //   style: TextStyle(
-            //     //     color: symptomsWithBlacksText.contains(duration)
-            //     //         ? Colors.black
-            //     //         : Colors.grey,
-            //     //   ),
-            //     // ),
-            //   ),
-            // ),
             const Spacer(),
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return  FeverAffirmationsSheet(symptomName: '',);
+                  return const FeverAffirmationsSheet(
+                    symptomName: '',
+                  );
                 }));
               },
               child: GestureDetector(
@@ -1067,7 +1090,9 @@ class _CreateDigitalPrescriptionScreenState
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return FeverAffirmationsSheet(symptomName: '',);
+                        return const FeverAffirmationsSheet(
+                          symptomName: '',
+                        );
                       },
                     );
                   },

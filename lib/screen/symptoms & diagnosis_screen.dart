@@ -1373,7 +1373,7 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                               isScrollControlled: true,
                               context: context,
                               builder: (BuildContext context) {
-                                return  FeverAffirmationsSheet(symptomName: '',);
+                                return FeverAffirmationsSheet(symptomName: '',);
                               },
                             );
                           },

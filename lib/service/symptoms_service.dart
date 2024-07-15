@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'package:healther_mobile_app/utils/constants.dart';
-import 'package:healther_mobile_app/utils/save_token.dart';
+import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:http/http.dart' as http;
 
 class CreateSymptomsService {
- // String tokens = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMDY5ODk3MiwiZXhwIjoxNzIwODcxNzcyfQ.WWavr8bNgTeslw9CUYr9oDNWJMQZ2RkgfON9-6hqa3Y";
-  String tokens = "";
+  String tokens =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMTAzMzQ2MywiZXhwIjoxNzIxMjA2MjYzfQ.0YoAwa0-MkwJjFHQdKAu4nt6gIP8lFx2prxmjOaJATI";
+
   Future<String?> fetchToken() async {
     return tokens = (await SharedPrefService.getAccessToken())!;
   }
 
   Future<Map<String, List<String>>> createSymptoms(String searchText) async {
-    await fetchToken();
+  //  await fetchToken();
     print("Token: $tokens");
 
     String url = ApiEndPoint.createSymptoms;
