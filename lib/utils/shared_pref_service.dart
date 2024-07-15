@@ -3,10 +3,57 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefService {
   static const _key = "access";
+  static String time = "times";
+  static const String timeKey = 'timePeriod';
 
   bool isTokenExpired(String token) {
     return JwtDecoder.isExpired(token);
   }
+
+  static const String symptomNameKey = 'symptomName';
+  static const String timePeriodKey = 'timePeriod';
+  static const String durationKey = 'duration';
+
+  static Future<void> setSymptomName(String symptomName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(symptomNameKey, symptomName);
+  }
+
+  static Future<String?> getSymptomName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(symptomNameKey);
+  }
+
+  static Future<void> setTimePeriod(String timePeriod) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(timePeriodKey, timePeriod);
+  }
+
+  static Future<String?> getTimePeriod() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(timePeriodKey);
+  }
+
+  static Future<void> setDuration(String duration) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(durationKey, duration);
+  }
+
+  static Future<String?> getDuration() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(durationKey);
+  }
+
+  // static Future<bool> setTimePeriod(String Times) async{
+  //   SharedPreferences prefs= await SharedPreferences.getInstance();
+  //   return await prefs.setString(time, Times);
+  // }
+  //
+  // static Future<String?> getTimePeriod()async{
+  //   SharedPreferences prefs= await SharedPreferences.getInstance();
+  //   return prefs.getString(time);
+  // }
+
 
   static Future<void> setAccessToken(String token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

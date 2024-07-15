@@ -46,14 +46,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
   }
 
   Widget _buildResults() {
-    return isSearching
-        ? const Padding(
-            padding: EdgeInsets.all(150.0),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-        : Row(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(

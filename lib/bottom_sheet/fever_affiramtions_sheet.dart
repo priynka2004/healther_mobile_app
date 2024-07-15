@@ -1,12 +1,12 @@
+//
 // import 'package:flutter/material.dart';
 // import 'package:healther_mobile_app/screen/create_digital_presscription_screen.dart';
 // import 'package:healther_mobile_app/utils/app_colors.dart';
 // import 'package:healther_mobile_app/utils/string_const.dart';
 //
-//
 // class FeverAffirmationsSheet extends StatefulWidget {
-//   const FeverAffirmationsSheet(this.symtoms,{Key? key}) : super(key: key);
-//   final String symtoms;
+//   const FeverAffirmationsSheet({required this.symptomName, Key? key}) : super(key: key);
+//   final String symptomName;
 //
 //   @override
 //   State<FeverAffirmationsSheet> createState() => _FeverAffirmationsSheetState();
@@ -92,9 +92,9 @@
 //                             ),
 //                           ),
 //                           const SizedBox(width: 5),
-//                           const Text(
-//                             'Fever',
-//                             style: TextStyle(
+//                           Text(
+//                             widget.symptomName,
+//                             style: const TextStyle(
 //                                 fontWeight: FontWeight.bold,
 //                                 fontSize: 20
 //                             ),
@@ -127,15 +127,6 @@
 //                                   filled: true,
 //                                   fillColor: const Color(0xffFFFFFF),
 //                                   border: InputBorder.none,
-//                                   // label: Text(
-//                                   //   '2',
-//                                   //   style: TextStyle(
-//                                   //     color: isFocused ? Colors.black : Colors.grey,
-//                                   //     fontSize: 16,
-//                                   //     fontWeight: FontWeight.w400,
-//                                   //   ),
-//                                   //   overflow: TextOverflow.ellipsis,
-//                                   // ),
 //                                   hintText: '2',
 //                                   hintStyle: TextStyle(
 //                                     color:
@@ -242,7 +233,7 @@
 //                                   Navigator.push(context,
 //                                     MaterialPageRoute(builder: (context) {
 //                                       return CreateDigitalPrescriptionScreen(
-//                                         symptoms: widget.symtoms,
+//                                         symptoms: widget.symptomName,
 //                                         timePeriod: timePeriod,
 //                                         duration: duration,
 //                                       );
@@ -304,6 +295,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:healther_mobile_app/utils/shared_pref_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:healther_mobile_app/screen/create_digital_presscription_screen.dart';
 import 'package:healther_mobile_app/utils/app_colors.dart';
 import 'package:healther_mobile_app/utils/string_const.dart';
@@ -338,6 +331,12 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
     timePeriodFocusNode.dispose();
     timePeriodController.dispose();
     super.dispose();
+  }
+
+  Future<void> saveToSharedPreferences() async {
+    await SharedPrefService.setSymptomName(widget.symptomName);
+    await SharedPrefService.setTimePeriod(timePeriodController.text);
+    await SharedPrefService.setDuration(selectedValue ?? 'years');
   }
 
   @override
@@ -519,44 +518,6 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
                           children: [
                             Container(
                               decoration: const BoxDecoration(
-                                color: AppColors.greenColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: AppColors.greenColor,
-                                  minimumSize: const Size(140, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  String timePeriod = timePeriodController.text;
-                                  String duration = selectedValue ?? 'years';
-
-                                  Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return CreateDigitalPrescriptionScreen(
-                                        symptoms: widget.symptomName,
-                                        timePeriod: timePeriod,
-                                        duration: duration,
-                                      );
-                                    }),
-                                  );
-                                },
-                                child: const Text(
-                                  AppText.save,
-                                  style: TextStyle(
-                                    color: AppColors.whiteColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            Container(
-                              decoration: const BoxDecoration(
                                 color: Color(0x0ff5F5F5),
                               ),
                               child: TextButton(
@@ -571,9 +532,47 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
                                   Navigator.pop(context);
                                 },
                                 child: const Text(
-                                  AppText.clear,
+                                  'Clear',
                                   style: TextStyle(
-                                    color: AppColors.darkGreenColor,
+                                    color: AppColors.black1Color,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Container(
+                              decoration: const BoxDecoration(
+                                color: AppColors.greenColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: AppColors.greenColor,
+                                  minimumSize: const Size(140, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  String timePeriod = timePeriodController.text;
+                                  String duration = selectedValue ?? 'years';
+
+                                  await saveToSharedPreferences();
+
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return CreateDigitalPrescriptionScreen(
+                                      symptoms: widget.symptomName,
+                                      timePeriod: timePeriod,
+                                      duration: duration,
+                                    );
+                                  }));
+                                },
+                                child: const Text(
+                                  AppText.save,
+                                  style: TextStyle(
+                                    color: AppColors.whiteColor,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -583,6 +582,7 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
