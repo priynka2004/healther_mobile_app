@@ -4,6 +4,7 @@ import 'package:healther_mobile_app/bottom_sheet/fever_affiramtions_sheet.dart';
 import 'package:healther_mobile_app/screen/sx&dx_screen.dart';
 import 'package:healther_mobile_app/utils/app_colors.dart';
 import 'package:healther_mobile_app/utils/string_const.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class CreateDigitalPrescriptionScreen extends StatefulWidget {
@@ -721,7 +722,8 @@ class _CreateDigitalPrescriptionScreenState
                               ),
                             );
                           },
-                          child: TextField(
+                          child:
+                          TextField(
                             controller: searchController,
                             enabled: false,
                             obscureText: false,
@@ -792,7 +794,7 @@ class _CreateDigitalPrescriptionScreenState
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return FeverAffirmationsSheet(widget.symptoms.toString());
+                                        return FeverAffirmationsSheet(symptomName: '',);
                                       },
                                     );
                                   },
@@ -1055,7 +1057,7 @@ class _CreateDigitalPrescriptionScreenState
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return  FeverAffirmationsSheet(widget.symptoms.toString());
+                  return  FeverAffirmationsSheet(symptomName: '',);
                 }));
               },
               child: GestureDetector(
@@ -1065,7 +1067,7 @@ class _CreateDigitalPrescriptionScreenState
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return FeverAffirmationsSheet(widget.symptoms.toString());
+                        return FeverAffirmationsSheet(symptomName: '',);
                       },
                     );
                   },
