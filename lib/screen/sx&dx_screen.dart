@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healther_mobile_app/bottom_sheet/seizure_sheet.dart';
@@ -169,6 +172,32 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
     );
   }
 
+  // void _searchSymptoms() {
+  //   if (searchController.text.isNotEmpty) {
+  //     setState(() {
+  //       isSearching = true;
+  //     });
+  //     createSymptomsService
+  //         .createSymptoms(searchController.text, _selectedSx, _selectedDx)
+  //         .then((result) {
+  //       setState(() {
+  //         _symptomsList = result['symptoms']!;
+  //         _diagnosesList = result['diagnoses']!;
+  //       });
+  //     }).catchError((error) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Error: $error')),
+  //       );
+  //     });
+  //   } else {
+  //     setState(() {
+  //       isSearching = false;
+  //     });
+  //   }
+  // }
+
+
+
   void _searchSymptoms() {
     if (searchController.text.isNotEmpty) {
       setState(() {
@@ -176,14 +205,25 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
       });
       createSymptomsService
           .createSymptoms(searchController.text, _selectedSx, _selectedDx)
+          .timeout(const Duration(seconds: 10))
           .then((result) {
         setState(() {
           _symptomsList = result['symptoms']!;
           _diagnosesList = result['diagnoses']!;
+          isSearching = false;
         });
       }).catchError((error) {
+        setState(() {
+          isSearching = false;
+        });
+        String errorMessage = 'Error: $error';
+        if (error is TimeoutException) {
+          errorMessage = 'Network is slow. Please try again later.';
+        } else if (error is SocketException || error is http.ClientException) {
+          errorMessage = 'Network is unreachable. Please check your connection.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $error')),
+          SnackBar(content: Text(errorMessage)),
         );
       });
     } else {
@@ -192,6 +232,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
