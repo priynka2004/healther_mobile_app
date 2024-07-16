@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:healther_mobile_app/provider/symptoms_provider.dart';
+import 'package:healther_mobile_app/screen/create_digital_prescription_screens.dart';
 import 'package:healther_mobile_app/screen/patient_datails_screen.dart';
 import 'package:healther_mobile_app/service/symptoms_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';

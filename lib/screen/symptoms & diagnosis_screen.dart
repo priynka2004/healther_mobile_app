@@ -1330,10 +1330,6 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                             ],
                           ),
                         ),
-
-
-
-
                       ],
                     ],
                   ),
@@ -1428,7 +1424,7 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                               isScrollControlled: true,
                               context: context,
                               builder: (BuildContext context) {
-                                return  FeverAffirmationsSheet(widget.symptoms.toString());
+                                return FeverAffirmationsSheet(symptomName: '',);
                               },
                             );
                           },

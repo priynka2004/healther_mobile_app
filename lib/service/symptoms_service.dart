@@ -1,18 +1,25 @@
 import 'dart:convert';
 import 'package:healther_mobile_app/utils/constants.dart';
-import 'package:healther_mobile_app/utils/save_token.dart';
+import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:http/http.dart' as http;
 
 class CreateSymptomsService {
+
   // String tokens = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMDY5ODk3MiwiZXhwIjoxNzIwODcxNzcyfQ.WWavr8bNgTeslw9CUYr9oDNWJMQZ2RkgfON9-6hqa3Y";
   String tokens = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMTAxNDgwMywiZXhwIjoxNzIxMTg3NjAzfQ.70ZmASp1IPnJsiWt-gx2sVfaYN1VRLL9CpAgEES7bkQ";
+
   // Future<String?> fetchToken() async {
   //   return tokens = (await SharedPrefService.getAccessToken())!;
   // }
 
   Future<Map<String, List<String>>> createSymptoms(String searchText,
+
       List<String> selectedSymptoms,List<String> selectedDiagnoses) async {
    // await fetchToken();
+
+      List<String> selectedSymptoms, List<String> selectedDiagnoses) async {
+    // await fetchToken();
+
     print("Token: $tokens");
 
     String url = ApiEndPoint.createSymptoms;
@@ -38,13 +45,6 @@ class CreateSymptomsService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
 
-      // if (data.containsKey('symptoms') && data.containsKey('diagnoses')) {
-      //   final symptomsList = data['symptoms'] as List<dynamic>;
-      //   final diagnosesList = data['diagnoses'] as List<dynamic>;
-      //   return {
-      //     'symptoms': symptomsList.cast<String>(),
-      //     'diagnoses': diagnosesList.cast<String>(),
-      //   };
       if (data.containsKey('search_output')) {
         final searchOutput = data['search_output'];
         final symptomsList = searchOutput['Symptoms'] as List<dynamic>?;
