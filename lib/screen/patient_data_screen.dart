@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:healther_mobile_app/utils/app_colors.dart';
 import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:intl/intl.dart';
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SavedDataScreen extends StatelessWidget {
   final SharedPrefService _prefsService = SharedPrefService();
+  TextEditingController spo2Controller = TextEditingController();
+  TextEditingController pulseRateController = TextEditingController();
+  TextEditingController rbsController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController appointmentBriefController = TextEditingController();
+  DateTime? _dob;
+  String? genderText;
 
   SavedDataScreen({super.key});
 
@@ -19,6 +29,20 @@ class SavedDataScreen extends StatelessWidget {
     } catch (e) {
       return 'Invalid Date';
     }
+  }
+
+  void _saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('mobileNumber', mobileNumberController.text);
+    prefs.setString('firstName', firstNameController.text);
+    prefs.setString('age', ageController.text);
+    prefs.setString('gender', genderText!);
+    if (_dob != null) {
+      prefs.setString('dob', _dob!.toIso8601String());
+    }
+    prefs.setString('spo2', spo2Controller.text);
+    prefs.setString('pulseRate', pulseRateController.text);
+    prefs.setString('rbs', rbsController.text);
   }
 
 

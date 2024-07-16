@@ -175,7 +175,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
         isSearching = true;
       });
       createSymptomsService
-          .createSymptoms(searchController.text)
+          .createSymptoms(searchController.text, _selectedSx, _selectedDx)
           .then((result) {
         setState(() {
           _symptomsList = result['symptoms']!;
