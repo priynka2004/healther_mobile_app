@@ -396,7 +396,6 @@ class _CreateDigitalPrescriptionScreenState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // if (!showPneumoniaTextField) ...[
                           Text(
                             'Associated Symptoms',
                             style: GoogleFonts.urbanist(
@@ -581,6 +580,8 @@ class _CreateDigitalPrescriptionScreenState
 
 
 
+
+///*********************************************************************
 
 
 
