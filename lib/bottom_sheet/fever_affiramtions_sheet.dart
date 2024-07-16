@@ -92,12 +92,14 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
                             ),
                           ),
                           const SizedBox(width: 5),
-                          const Text(
+                           Text(
                             'Fever',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20
+                                fontSize: 20,
+                              overflow: TextOverflow.ellipsis,
                             ),
+                             maxLines: 1,
                           ),
                         ],
                       ),

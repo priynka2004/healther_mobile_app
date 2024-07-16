@@ -865,7 +865,6 @@ class _CreateDigitalPrescriptionScreenState
                               },
                             ),
                           const Divider(),
-
                           Text(
                             'Differential Diagnosis',
                             style: GoogleFonts.urbanist(
