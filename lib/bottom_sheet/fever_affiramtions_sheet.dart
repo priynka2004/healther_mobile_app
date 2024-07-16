@@ -101,13 +101,28 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 5),
-                            Text(
-                              widget.symptomName,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20
-                              ),
+                          ),
+                          const SizedBox(width: 5),
+                           Text(
+                            'Fever',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                             maxLines: 1,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          const Text(
+                            "Time period",
+                            style: TextStyle(
+                              color: AppColors.black1Color,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
                             ),
                           ],
                         ),

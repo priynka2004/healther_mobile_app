@@ -752,7 +752,7 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                               ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: widget.selectedSx!.length,
+                                itemCount: widget.selectedSx.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -766,7 +766,7 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                                       child: Row(
                                         children: [
                                           Expanded(
-                                            child: Text(widget.selectedSx![index]),
+                                            child: Text(widget.selectedSx[index],maxLines: 1,),
                                           ),
                                           const Padding(
                                             padding: EdgeInsets.only(right: 80),
@@ -779,7 +779,18 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                                             ),
                                           ),
                                           const Spacer(),
-                                          buildIcon(Icons.edit, const Color(0xff0B0B0B), const Color(0xffF8F7FC)),
+                                          GestureDetector(
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                  backgroundColor: Colors.transparent,
+                                                  isScrollControlled: true,
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return  FeverAffirmationsSheet(widget.selectedSx[index]);
+                                                  },
+                                                );
+                                              },
+                                              child: buildIcon(Icons.edit, const Color(0xff0B0B0B), const Color(0xffF8F7FC))),
                                           const SizedBox(width: 6),
                                           buildIcon(Icons.close, const Color(0xffF8F7FC), const Color(0xff0B0B0B)),
                                         ],
@@ -792,6 +803,46 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Diagnosis',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Roboto",
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.blackColor,
+                        ),
+                      ),
+                      if (widget.selectedDx != null)
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: widget.selectedDx.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFC9F0E5),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(widget.selectedDx[index],maxLines: 1 ,),
+                                    ),
+                                    const Spacer(),
+                                   // buildIcon(Icons.edit, const Color(0xff0B0B0B), const Color(0xffF8F7FC)),
+                                    const SizedBox(width: 6),
+                                    buildIcon(Icons.close, const Color(0xffF8F7FC), const Color(0xff0B0B0B)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       const SizedBox(height: 16),
                       if (!showPneumoniaTextField) ...[
                         const Text(

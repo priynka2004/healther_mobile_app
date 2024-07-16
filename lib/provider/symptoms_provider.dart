@@ -10,11 +10,15 @@ class CreateSymptomsProvider extends ChangeNotifier {
   List<String> symptomsList = [];
   List<String> diagnosesList = [];
 
-  Future<void> postCreateSymptoms(String searchText,List<String> selectedSymptoms,
-      List<String> selectedDiagnoses,) async {
+
+
+  Future<void> postCreateSymptoms(String searchText,
+      List<String> selectedSymptoms,List<String> selectedDiagnoses) async {
     try {
       CreateSymptomsService createSymptomsService = Get.find();
-      final result = await createSymptomsService.createSymptoms(searchText,selectedSymptoms, selectedDiagnoses);
+      final result = await createSymptomsService.createSymptoms(
+          searchText,selectedSymptoms,selectedDiagnoses);
+
       symptomsList = result['symptoms'] ?? [];
       diagnosesList = result['diagnoses'] ?? [];
       errorMessage = null;

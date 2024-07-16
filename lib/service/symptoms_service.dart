@@ -4,16 +4,22 @@ import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:http/http.dart' as http;
 
 class CreateSymptomsService {
-  String tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMTEwNDAzNCwiZXhwIjoxNzIxMjc2ODM0fQ.msBFatSk8OuGl34jg-pyvQTPsf4M5jx4a4rWZ6KlH2o";
+
+  // String tokens = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMDY5ODk3MiwiZXhwIjoxNzIwODcxNzcyfQ.WWavr8bNgTeslw9CUYr9oDNWJMQZ2RkgfON9-6hqa3Y";
+  String tokens = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmNhMGFiMWEyNDMxZTE2YzQxZWJhZSIsImlhdCI6MTcyMTAxNDgwMywiZXhwIjoxNzIxMTg3NjAzfQ.70ZmASp1IPnJsiWt-gx2sVfaYN1VRLL9CpAgEES7bkQ";
 
   // Future<String?> fetchToken() async {
   //   return tokens = (await SharedPrefService.getAccessToken())!;
   // }
 
   Future<Map<String, List<String>>> createSymptoms(String searchText,
+
+      List<String> selectedSymptoms,List<String> selectedDiagnoses) async {
+   // await fetchToken();
+
       List<String> selectedSymptoms, List<String> selectedDiagnoses) async {
     // await fetchToken();
+
     print("Token: $tokens");
 
     String url = ApiEndPoint.createSymptoms;
