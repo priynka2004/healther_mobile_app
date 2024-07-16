@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
-          home: isLoggedIn ? const PatientDetailsScreen(): const CreateDigitalPrescriptionScreens(),
+          home: const PatientDetailsScreen(),
         )
     );
   }
