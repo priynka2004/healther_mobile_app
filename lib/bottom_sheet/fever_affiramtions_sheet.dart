@@ -18,6 +18,7 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
   final FocusNode timePeriodFocusNode = FocusNode();
   bool isFocused = false;
   final TextEditingController timePeriodController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -77,216 +78,226 @@ class _FeverAffirmationsSheetState extends State<FeverAffirmationsSheet> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            height: 25,
-                            width: 25,
-                            color: const Color(0xff52CFAC),
-                            child: const Center(
-                              child: Text(
-                                "Sx",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            widget.symptomName,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          const Text(
-                            "Time period",
-                            style: TextStyle(
-                              color: AppColors.black1Color,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
-                              child: TextField(
-                                focusNode: timePeriodFocusNode,
-                                controller: timePeriodController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color(0xffFFFFFF),
-                                  border: InputBorder.none,
-                                  hintText: '2',
-                                  hintStyle: TextStyle(
-                                    color:
-                                    isFocused ? Colors.grey : Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 2),
-                          Flexible(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
-                              child: DropdownButtonFormField<String>(
-                                value: selectedValue,
-                                decoration: const InputDecoration(
-                                  filled: true,
-                                  fillColor: Color(0xffFFFFFF),
-                                  border: InputBorder.none,
-                                ),
-                                items: options.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedValue = newValue;
-                                  });
-                                },
-                                hint: const Text(
-                                  'years',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        AppText.privateNotes,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20
-                        ),
-                      ),
-                      const Divider(color: AppColors.blackColor),
-                      const SizedBox(height: 4),
-                      Container(
-                        height: 160,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFEDFFFA),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Add your notes here.',
-                              hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Urbanist',
-                                  color: Colors.grey
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
                             Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0x0ff5F5F5),
-                              ),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color(0xffF5F5F5),
-                                  minimumSize: const Size(140, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'Clear',
+                              height: 25,
+                              width: 25,
+                              color: const Color(0xff52CFAC),
+                              child: const Center(
+                                child: Text(
+                                  "Sx",
                                   style: TextStyle(
-                                    color: AppColors.black1Color,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold
                                   ),
                                 ),
                               ),
                             ),
-                            const Spacer(),
-                            Container(
-                              decoration: const BoxDecoration(
-                                color: AppColors.greenColor,
-                                shape: BoxShape.circle,
+                            const SizedBox(width: 5),
+                            Text(
+                              widget.symptomName,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20
                               ),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: AppColors.greenColor,
-                                  minimumSize: const Size(140, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            const Text(
+                              "Time period",
+                              style: TextStyle(
+                                color: AppColors.black1Color,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(2.0),
                                 ),
-                                onPressed: () async {
-                                  String timePeriod = timePeriodController.text;
-                                  String duration = selectedValue ?? 'years';
-
-                                  await saveToSharedPreferences();
-
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return CreateDigitalPrescriptionScreen(
-                                      symptoms: widget.symptomName,
-                                      timePeriod: timePeriod,
-                                      duration: duration,
+                                child: TextFormField(
+                                  focusNode: timePeriodFocusNode,
+                                  controller: timePeriodController,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: const Color(0xffFFFFFF),
+                                    border: InputBorder.none,
+                                    // hintText: '2',
+                                    hintStyle: TextStyle(
+                                      color: isFocused ? Colors.grey : Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Time period is required';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 2),
+                            Flexible(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(2.0),
+                                ),
+                                child: DropdownButtonFormField<String>(
+                                  value: selectedValue,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Color(0xffFFFFFF),
+                                    border: InputBorder.none,
+                                  ),
+                                  items: options.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
                                     );
-                                  }));
-                                },
-                                child: const Text(
-                                  AppText.save,
-                                  style: TextStyle(
-                                    color: AppColors.whiteColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedValue = newValue;
+                                    });
+                                  },
+                                  hint: const Text(
+                                    'years',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
+                        const SizedBox(height: 8),
+                        const Text(
+                          AppText.privateNotes,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20
+                          ),
+                        ),
+                        const Divider(color: AppColors.blackColor),
+                        const SizedBox(height: 4),
+                        Container(
+                          height: 160,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFEDFFFA),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Add your notes here.',
+                                hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Urbanist',
+                                    color: Colors.grey
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: Color(0x0ff5F5F5),
+                                ),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: const Color(0xffF5F5F5),
+                                    minimumSize: const Size(140, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    'Clear',
+                                    style: TextStyle(
+                                      color: AppColors.black1Color,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.greenColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: AppColors.greenColor,
+                                    minimumSize: const Size(140, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      String timePeriod = timePeriodController.text;
+                                      String duration = selectedValue ?? 'years';
+
+                                      await saveToSharedPreferences();
+
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return CreateDigitalPrescriptionScreen(
+                                          symptoms: widget.symptomName,
+                                          timePeriod: timePeriod,
+                                          duration: duration,
+                                        );
+                                      }));
+                                    }
+                                  },
+                                  child: const Text(
+                                    AppText.save,
+                                    style: TextStyle(
+                                      color: AppColors.whiteColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                   ),
                 ),
               ),

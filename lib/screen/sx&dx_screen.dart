@@ -20,6 +20,8 @@ class SxAndDxScreen extends StatefulWidget {
 class _SxAndDxScreenState extends State<SxAndDxScreen> {
   final List<String> _selectedSx = [];
   final List<String> _selectedDx = [];
+  List<String> _associatedSymptomsList = [];
+  List<String> _differentialDiagnosesList = [];
   bool isSelected = false;
   TextEditingController searchController = TextEditingController();
   List<String> _symptomsList = [];
@@ -74,57 +76,57 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
           child: Column(
             children: _symptomsList
                 .map((symptom) => ListTile(
-              title: Row(
-                children: [
-                  Transform.scale(
-                    scale: 0.9,
-                    child: Checkbox(
-                      shape: ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      value: _selectedSx.contains(symptom),
-                      activeColor: const Color(0xFFA1A1A1),
-                      side: MaterialStateBorderSide.resolveWith(
-                            (states) => const BorderSide(
-                          width: 2.0,
-                          color: Color(0xFFA1A1A1),
-                        ),
+                      title: Row(
+                        children: [
+                          Transform.scale(
+                            scale: 0.9,
+                            child: Checkbox(
+                              shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              value: _selectedSx.contains(symptom),
+                              activeColor: const Color(0xFFA1A1A1),
+                              side: MaterialStateBorderSide.resolveWith(
+                                (states) => const BorderSide(
+                                  width: 2.0,
+                                  color: Color(0xFFA1A1A1),
+                                ),
+                              ),
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  if (value == true) {
+                                    _selectedSx.add(symptom);
+                                  } else {
+                                    _selectedSx.remove(symptom);
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  left: 4, top: 8, bottom: 8),
+                              height: 40,
+                              color: const Color(0xffF7F7F7),
+                              child: Text(
+                                symptom,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      onChanged: (bool? value) {
+                      onTap: () {
                         setState(() {
-                          if (value == true) {
-                            _selectedSx.add(symptom);
-                          } else {
+                          if (_selectedSx.contains(symptom)) {
                             _selectedSx.remove(symptom);
+                          } else {
+                            _selectedSx.add(symptom);
                           }
                         });
                       },
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 4, top: 8, bottom: 8),
-                      height: 40,
-                      color: const Color(0xffF7F7F7),
-                      child: Text(
-                        symptom,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () {
-                setState(() {
-                  if (_selectedSx.contains(symptom)) {
-                    _selectedSx.remove(symptom);
-                  } else {
-                    _selectedSx.add(symptom);
-                  }
-                });
-              },
-              selected: _selectedSx.contains(symptom),
-            ))
+                      selected: _selectedSx.contains(symptom),
+                    ))
                 .toList(),
           ),
         ),
@@ -132,57 +134,57 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
           child: Column(
             children: _diagnosesList
                 .map((diagnosis) => ListTile(
-              title: Row(
-                children: [
-                  Transform.scale(
-                    scale: 0.9,
-                    child: Checkbox(
-                      shape: ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      value: _selectedDx.contains(diagnosis),
-                      activeColor: const Color(0xFFA1A1A1),
-                      side: MaterialStateBorderSide.resolveWith(
-                            (states) => const BorderSide(
-                          width: 2.0,
-                          color: Color(0xFFA1A1A1),
-                        ),
+                      title: Row(
+                        children: [
+                          Transform.scale(
+                            scale: 0.9,
+                            child: Checkbox(
+                              shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              value: _selectedDx.contains(diagnosis),
+                              activeColor: const Color(0xFFA1A1A1),
+                              side: MaterialStateBorderSide.resolveWith(
+                                (states) => const BorderSide(
+                                  width: 2.0,
+                                  color: Color(0xFFA1A1A1),
+                                ),
+                              ),
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  if (value == true) {
+                                    _selectedDx.add(diagnosis);
+                                  } else {
+                                    _selectedDx.remove(diagnosis);
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  left: 4, top: 8, bottom: 8),
+                              height: 40,
+                              color: const Color(0xffF7F7F7),
+                              child: Text(
+                                diagnosis,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      onChanged: (bool? value) {
+                      onTap: () {
                         setState(() {
-                          if (value == true) {
-                            _selectedDx.add(diagnosis);
-                          } else {
+                          if (_selectedDx.contains(diagnosis)) {
                             _selectedDx.remove(diagnosis);
+                          } else {
+                            _selectedDx.add(diagnosis);
                           }
                         });
                       },
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 4, top: 8, bottom: 8),
-                      height: 40,
-                      color: const Color(0xffF7F7F7),
-                      child: Text(
-                        diagnosis,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () {
-                setState(() {
-                  if (_selectedDx.contains(diagnosis)) {
-                    _selectedDx.remove(diagnosis);
-                  } else {
-                    _selectedDx.add(diagnosis);
-                  }
-                });
-              },
-              selected: _selectedDx.contains(diagnosis),
-            ))
+                      selected: _selectedDx.contains(diagnosis),
+                    ))
                 .toList(),
           ),
         ),
@@ -192,41 +194,124 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
 
 
 
-  void _searchSymptoms() {
+  Future<void> _searchSymptoms() async {
     if (searchController.text.isNotEmpty) {
       setState(() {
         isSearching = true;
       });
-      createSymptomsService
-          .createSymptoms(searchController.text, _selectedSx, _selectedDx)
-          .timeout(const Duration(seconds: 10))
-          .then((result) {
+      try {
+        final result = await createSymptomsService.createSymptoms(
+          searchController.text,
+          _selectedSx,
+          _selectedDx,
+        ).timeout(const Duration(seconds: 10));
+
         setState(() {
-          _symptomsList = result['symptoms']!;
-          _diagnosesList = result['diagnoses']!;
-          apiResponse = result;
-         // isSearching = false;
+          _symptomsList = result['symptoms'] ?? [];
+          _diagnosesList = result['diagnoses'] ?? [];
+          _associatedSymptomsList = result['associatedSymptoms'] ?? [];
+          _differentialDiagnosesList = result['differentialDiagnoses'] ?? [];
+          isSearching = false;
         });
-      }).catchError((error) {
-        // setState(() {
-        //   isSearching = false;
-        // });
-        String errorMessage = 'Error: $error';
-        if (error is TimeoutException) {
-          errorMessage = 'Network is slow. Please try again later.';
-        } else if (error is SocketException || error is http.ClientException) {
-          errorMessage = 'Network is unreachable. Please check your connection.';
+
+        if (_associatedSymptomsList.isNotEmpty) {
+          // Enable navigation here if conditions are met
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No associated symptoms found.'),
+            ),
+          );
         }
+      } on TimeoutException {
+        setState(() {
+          isSearching = false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(errorMessage)),
+          const SnackBar(
+            content: Text('Request timed out. Please try again.'),
+          ),
         );
-      });
+      } on SocketException {
+        setState(() {
+          isSearching = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Network unreachable. Please check your connection.'),
+          ),
+        );
+      } catch (error) {
+        setState(() {
+          isSearching = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $error'),
+          ),
+        );
+      }
     } else {
       setState(() {
         isSearching = false;
       });
     }
   }
+
+
+
+
+
+  // Future<void> _searchSymptoms() async {
+  //   if (searchController.text.isNotEmpty) {
+  //     setState(() {
+  //       isSearching = true;
+  //     });
+  //     createSymptomsService
+  //         .createSymptoms(searchController.text, _selectedSx, _selectedDx)
+  //         .timeout(const Duration(seconds: 10))
+  //         .then((result) {
+  //       print(result);
+  //       setState(() {
+  //         _symptomsList = result['symptoms'] ?? [];
+  //         _diagnosesList = result['diagnoses'] ?? [];
+  //         _associatedSymptomsList = result['associatedSymptoms'] ?? [];
+  //         _differentialDiagnosesList = result['differentialDiagnoses'] ?? [];
+  //         isSearching = false;
+  //       });
+  //       if(_associatedSymptomsList.isNotEmpty || _associatedSymptomsList != null){
+  //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //           print('Selected Symptoms: $_selectedSx');
+  //           print('Selected Diagnoses: $_selectedDx');
+  //           return CreateDigitalPrescriptionScreen(
+  //             selectedDiagnoses: _selectedDx,
+  //             selectedSymptoms: _selectedSx,
+  //             symptoms: searchController.text,
+  //             associatedSymptoms: _associatedSymptomsList,
+  //             differentialDiagnoses: _differentialDiagnosesList,
+  //           );
+  //         }));
+  //       }
+  //     }).catchError((error) {
+  //       setState(() {
+  //         isSearching = false;
+  //       });
+  //       String errorMessage = 'Error: $error';
+  //       if (error is TimeoutException) {
+  //         errorMessage = 'Network is slow. Please try again later.';
+  //       } else if (error is SocketException || error is http.ClientException) {
+  //         errorMessage = 'Network is unreachable. Please check your connection.';
+  //       }
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text(errorMessage)),
+  //       );
+  //     });
+  //   } else {
+  //     setState(() {
+  //       isSearching = false;
+  //     });
+  //   }
+  // }
 
 
   @override
@@ -246,59 +331,43 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
               width: 60,
               decoration: const BoxDecoration(
                   color: AppColors.greenColor, shape: BoxShape.circle),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: AppColors.greenColor,
-                  minimumSize: const Size(140, 60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                // onPressed: () {
-                //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //     return const CreateDigitalPrescriptionSymptomsScreen();
-                //   }));
-                // },
-                onPressed: _selectedSx.length >= 3 ? () {
-                  //if (_selectedSx.length < 3) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(
-                  //       content: Text('Please select at least 3 symptoms.'),
-                  //     ),
-                  //   );
-                  // } else if (_selectedDx.length < 1) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(
-                  //       content: Text('Please select at least 1 diagnosis.'),
-                  //     ),
-                  //   );
-                  // } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                          return CreateDigitalPrescriptionScreen(
-                            selectedDiagnoses: _selectedDx,
-                            selectedSymptoms: _selectedSx,
-                            symptoms: searchController.text,
-                          );
-                        }));
-                  } : _showMinimumSymptomsMessage,
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //   return CreateDigitalPrescriptionScreen(
-                  //     selectedDiagnoses: _selectedDx,
-                  //     selectedSymptoms: _selectedSx,
-                  //   );
-                  // }));
- // },
-
-                child: const Text(
-                  AppText.save,
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+              child:
+              TextButton(
+            style: TextButton.styleFrom(
+            backgroundColor: AppColors.greenColor,
+              minimumSize: const Size(140, 60),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
+            ),
+      onPressed: _selectedSx.length >= 3
+          ? () async{
+        await _searchSymptoms();
+        if(_associatedSymptomsList.isNotEmpty || _associatedSymptomsList != null){
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          print('Selected Symptoms: $_selectedSx');
+          print('Selected Diagnoses: $_selectedDx');
+          return CreateDigitalPrescriptionScreen(
+            selectedDiagnoses: _selectedDx,
+            selectedSymptoms: _selectedSx,
+            symptoms: searchController.text,
+            associatedSymptoms: _associatedSymptomsList,
+            differentialDiagnoses: _differentialDiagnosesList,
+          );
+        }));
+      }}
+          : _showMinimumSymptomsMessage,
+      child: const Text(
+        AppText.save,
+        style: TextStyle(
+          color: AppColors.whiteColor,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ),
+
+
             ),
           ),
         ],
@@ -324,7 +393,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
                     border: InputBorder.none,
                     icon: GestureDetector(
                       child:
-                      const Icon(Icons.search, color: AppColors.blackColor),
+                          const Icon(Icons.search, color: AppColors.blackColor),
                     ),
                   ),
                   onChanged: (value) {
@@ -365,7 +434,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
                     color: const Color(0xff52CFAC),
                     child: const Center(
                         child:
-                        Text("Sx", style: TextStyle(color: Colors.white))),
+                            Text("Sx", style: TextStyle(color: Colors.white))),
                   ),
                   const SizedBox(width: 170),
                   Container(
@@ -374,7 +443,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
                     color: AppColors.darkRedColor,
                     child: const Center(
                         child:
-                        Text("Dx", style: TextStyle(color: Colors.white))),
+                            Text("Dx", style: TextStyle(color: Colors.white))),
                   ),
                 ],
               ),
@@ -441,7 +510,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
     bool isSeizuresSelected = _selectedSx.contains("Seizures");
     if (isSeizuresSelected) {
       dxTitles.removeWhere((title) =>
-      title == "Opt 7" ||
+          title == "Opt 7" ||
           title == "Opt 8" ||
           title == "Opt 9" ||
           title == "Opt 10" ||
@@ -466,9 +535,7 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
       padding: const EdgeInsets.only(left: 14, right: 14, bottom: 8),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        decoration: const BoxDecoration(
-            color: Color(0xFFF7F7F7)
-        ),
+        decoration: const BoxDecoration(color: Color(0xFFF7F7F7)),
         child: Column(
           children: [
             GestureDetector(
@@ -530,17 +597,17 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
                           color: const Color(0xFFA1A1A1),
                         ),
                         color: (type == "Sx" && isSelectedSx) ||
-                            (type == "Dx" && isSelectedDx)
+                                (type == "Dx" && isSelectedDx)
                             ? const Color(0xFFFEFEFE)
                             : Colors.transparent,
                       ),
                       child: (type == "Sx" && isSelectedSx) ||
-                          (type == "Dx" && isSelectedDx)
+                              (type == "Dx" && isSelectedDx)
                           ? const Icon(
-                        Icons.check,
-                        size: 16,
-                        color: Colors.black,
-                      )
+                              Icons.check,
+                              size: 16,
+                              color: Colors.black,
+                            )
                           : null,
                     ),
                   ),
@@ -568,5 +635,3 @@ class _SxAndDxScreenState extends State<SxAndDxScreen> {
     );
   }
 }
-
-

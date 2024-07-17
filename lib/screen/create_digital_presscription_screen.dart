@@ -15,10 +15,14 @@ class CreateDigitalPrescriptionScreen extends StatefulWidget {
     this.symptoms,
     this.timePeriod,
     this.duration,
+    this.associatedSymptoms,
+    this.differentialDiagnoses
   }) : super(key: key);
 
   final List<String>? selectedSymptoms;
   final List<String>? selectedDiagnoses;
+  final List<String>? associatedSymptoms;
+  final List<String>? differentialDiagnoses;
   final String? symptoms;
   final String? timePeriod;
   final String? duration;
@@ -38,6 +42,9 @@ class _CreateDigitalPrescriptionScreenState
 
   bool showPneumoniaTextField = false;
   String times = '';
+
+   final List<String> associatedSymptoms=[];
+   final List<String> differentialDiagnoses=[];
 
   void addSymptom(String name, String duration) {
     setState(() {
@@ -407,6 +414,53 @@ class _CreateDigitalPrescriptionScreenState
                               ),
                             ),
                           ),
+                          if (widget.associatedSymptoms != null)
+                            SizedBox(
+                              width: double.infinity,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: widget.associatedSymptoms?.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Container(
+                                      height: 40,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFC9F0E5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                          left: 4, top: 8, bottom: 8, right: 6),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              widget.associatedSymptoms![index],
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () =>
+                                                _removeDiagnoses(index),
+                                            child: buildIcon(
+                                                Icons.close,
+                                                const Color(0xffF8F7FC),
+                                                const Color(0xff0B0B0B)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           const Divider(),
                           Text(
                             'Differential Diagnosis',
@@ -419,6 +473,53 @@ class _CreateDigitalPrescriptionScreenState
                               ),
                             ),
                           ),
+                          if (widget.differentialDiagnoses != null)
+                            SizedBox(
+                              width: double.infinity,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: widget.differentialDiagnoses?.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Container(
+                                      height: 40,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFC9F0E5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                          left: 4, top: 8, bottom: 8, right: 6),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              widget.differentialDiagnoses![index],
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () =>
+                                                _removeDiagnoses(index),
+                                            child: buildIcon(
+                                                Icons.close,
+                                                const Color(0xffF8F7FC),
+                                                const Color(0xff0B0B0B)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           const Divider(),
                         ],
                       ),
@@ -432,11 +533,6 @@ class _CreateDigitalPrescriptionScreenState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        // onTap: () {
-                        //   Navigator.push(context, MaterialPageRoute(builder: (context){
-                        //     return DrugPrescriptionFollowupScreen();
-                        //   }));
-                        // },
                         child: Container(
                           width: 150,
                           height: 50,
@@ -485,64 +581,6 @@ class _CreateDigitalPrescriptionScreenState
                       ),
                     ]),
               ),
-
-              // Padding(
-              //   padding: const EdgeInsets.all(6.0),
-              //   child: Container(
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(4.0),
-              //       child: Row(children: [
-              //         GestureDetector(
-              //           child: Container(
-              //             width: 150,
-              //             height: 50,
-              //             decoration: BoxDecoration(
-              //               color: const Color(0xffF5F5F5),
-              //               borderRadius: BorderRadius.circular(4),
-              //             ),
-              //             child: const Center(
-              //               child: Text(
-              //                 'Clear',
-              //                 style: TextStyle(
-              //                   color: Colors.black,
-              //                   fontSize: 12,
-              //                   fontWeight: FontWeight.w600,
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //         const SizedBox(width: 20),
-              //         GestureDetector(
-              //           onTap: () {
-              //             ScaffoldMessenger.of(context).showSnackBar(
-              //               const SnackBar(
-              //                 content:
-              //                     Text('Sx & Dx have been saved successfully.'),
-              //               ),
-              //             );
-              //           },
-              //           child: Container(
-              //             width: 150,
-              //             height: 50,
-              //             decoration: BoxDecoration(
-              //               color: const Color(0xFF32856E),
-              //               borderRadius: BorderRadius.circular(4),
-              //             ),
-              //             child: const Center(
-              //               child: Text(
-              //                 'Save',
-              //                 style: TextStyle(color: Colors.white),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ]),
-              //     ),
-              //   ),
-              // ),
-
-
             ],
           ),
         ),
@@ -637,6 +675,42 @@ class _CreateDigitalPrescriptionScreenState
       ),
     );
   }
+
+
+  Widget _buildSymptomsList(List<String> symptoms) {
+    if (symptoms.isEmpty) {
+      return const Text('No associated symptoms found.');
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: symptoms.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(symptoms[index]),
+        );
+      },
+    );
+  }
+
+  Widget _buildDiagnosesList(List<String> diagnoses) {
+    if (diagnoses.isEmpty) {
+      return const Text('No differential diagnoses found.');
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      //itemCount: diagnoses.length,
+      itemCount:  widget.differentialDiagnoses?.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(diagnoses[index]),
+        );
+      },
+    );
+  }
+
+
 }
 
 

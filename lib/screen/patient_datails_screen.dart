@@ -520,7 +520,7 @@ class _PatientDetailsScreenState extends State<PatientDetailsScreen> {
     prefs.setString('mobileNumber', mobileNumberController.text);
     prefs.setString('firstName', firstNameController.text);
     prefs.setString('age', ageController.text);
-    prefs.setString('gender', genderText!);
+    prefs.setString('gender', genderText?? '');
     if (_dob != null) {
       prefs.setString('dob', _dob!.toIso8601String());
     }
