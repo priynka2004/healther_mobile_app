@@ -85,7 +85,7 @@ class _CreateDigitalPrescriptionScreenState
   @override
   void initState() {
     super.initState();
-    _loadSavedValue();
+    //_loadSavedValue();
     getSharedPreferenceData();
   }
 
@@ -102,13 +102,13 @@ class _CreateDigitalPrescriptionScreenState
     });
   }
 
-  Future<void> _loadSavedValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? savedValue = prefs.getString('savedValue');
-    setState(() {
-      searchController.text = savedValue ?? '';
-    });
-  }
+  // Future<void> _loadSavedValue() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? savedValue = prefs.getString('savedValue');
+  //   setState(() {
+  //     searchController.text = savedValue ?? '';
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -427,12 +427,16 @@ class _CreateDigitalPrescriptionScreenState
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Row(children: [
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       GestureDetector(
+                        // onTap: () {
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context){
+                        //     return DrugPrescriptionFollowupScreen();
+                        //   }));
+                        // },
                         child: Container(
                           width: 150,
                           height: 50,
@@ -452,15 +456,17 @@ class _CreateDigitalPrescriptionScreenState
                           ),
                         ),
                       ),
-                      const SizedBox(width: 20),
+                      // const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content:
-                                  Text('Sx & Dx have been saved successfully.'),
+                              content: Text('Sx & Dx have been saved successfully.'),
                             ),
                           );
+                          // Navigator.push(context, MaterialPageRoute(builder: (context){
+                          //   return const AppointmentScreen();
+                          // }));
                         },
                         child: Container(
                           width: 150,
@@ -478,9 +484,65 @@ class _CreateDigitalPrescriptionScreenState
                         ),
                       ),
                     ]),
-                  ),
-                ),
               ),
+
+              // Padding(
+              //   padding: const EdgeInsets.all(6.0),
+              //   child: Container(
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(4.0),
+              //       child: Row(children: [
+              //         GestureDetector(
+              //           child: Container(
+              //             width: 150,
+              //             height: 50,
+              //             decoration: BoxDecoration(
+              //               color: const Color(0xffF5F5F5),
+              //               borderRadius: BorderRadius.circular(4),
+              //             ),
+              //             child: const Center(
+              //               child: Text(
+              //                 'Clear',
+              //                 style: TextStyle(
+              //                   color: Colors.black,
+              //                   fontSize: 12,
+              //                   fontWeight: FontWeight.w600,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         const SizedBox(width: 20),
+              //         GestureDetector(
+              //           onTap: () {
+              //             ScaffoldMessenger.of(context).showSnackBar(
+              //               const SnackBar(
+              //                 content:
+              //                     Text('Sx & Dx have been saved successfully.'),
+              //               ),
+              //             );
+              //           },
+              //           child: Container(
+              //             width: 150,
+              //             height: 50,
+              //             decoration: BoxDecoration(
+              //               color: const Color(0xFF32856E),
+              //               borderRadius: BorderRadius.circular(4),
+              //             ),
+              //             child: const Center(
+              //               child: Text(
+              //                 'Save',
+              //                 style: TextStyle(color: Colors.white),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ]),
+              //     ),
+              //   ),
+              // ),
+
+
             ],
           ),
         ),
@@ -581,7 +643,6 @@ class _CreateDigitalPrescriptionScreenState
 
 
 
-///*********************************************************************
 
 
 

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:healther_mobile_app/utils/constants.dart';
-import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:http/http.dart' as http;
 
 class CreateSymptomsService {
@@ -16,9 +15,6 @@ class CreateSymptomsService {
 
       List<String> selectedSymptoms,List<String> selectedDiagnoses) async {
    // await fetchToken();
-
-      List<String> selectedSymptoms, List<String> selectedDiagnoses) async {
-    // await fetchToken();
 
     print("Token: $tokens");
 

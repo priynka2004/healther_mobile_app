@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:healther_mobile_app/utils/app_colors.dart';
 import 'package:healther_mobile_app/utils/shared_pref_service.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';

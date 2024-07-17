@@ -786,7 +786,7 @@ class _SymptomsDiagnosisScreenState extends State<SymptomsDiagnosisScreen> {
                                                   isScrollControlled: true,
                                                   context: context,
                                                   builder: (BuildContext context) {
-                                                    return  FeverAffirmationsSheet(widget.selectedSx[index]);
+                                                    return  FeverAffirmationsSheet(symptomName: widget.selectedSx[index],);
                                                   },
                                                 );
                                               },
